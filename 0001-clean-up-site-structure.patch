@@ -1,0 +1,139 @@
+From d9d22b4d30a6d099025bdc1340f697a79436745f Mon Sep 17 00:00:00 2001
+From: Allan Day <allanpday@gmail.com>
+Date: Fri, 19 Jan 2018 16:38:30 +0000
+Subject: [PATCH] clean up site structure
+
+Various improvements to the site structure:
+
+ * Link to the flatpak setup page before providing instructions on
+   how to add the flathub remote.
+ * Reduce the number of sections on the homepage so it's easier to
+   follow.
+ * Make "submit an app" more prominent.
+ * Cut down on the amount of superfluous text.
+---
+ data/menu.yml          | 11 ++++-------
+ source/apps.html.haml  | 14 ++++++--------
+ source/index.html.haml | 46 ++++++++++++++--------------------------------
+ 3 files changed, 24 insertions(+), 47 deletions(-)
+
+diff --git a/data/menu.yml b/data/menu.yml
+index 47a9079..7eff5c3 100644
+--- a/data/menu.yml
++++ b/data/menu.yml
+@@ -1,7 +1,4 @@
+-- title: Using Flathub
+-  link: "#using"
+-- title: Applications
+-  link: "apps.html"
+-- title: Flatpak
+-  link: "http://flatpak.org"
+-
++- title: Browse apps
++  link: "apps"
++- title: Submit an app
++  link: "https://github.com/flathub/flathub/wiki/Package-Guidelines"
+diff --git a/source/apps.html.haml b/source/apps.html.haml
+index f4b0d9e..806ff43 100644
+--- a/source/apps.html.haml
++++ b/source/apps.html.haml
+@@ -6,11 +6,11 @@ description: Applications distributed as Flatpaks, ready to download.
+   .container
+     .row
+       .col-lg-10.col-lg-offset-1
+-        %h1 Flatpak Applications
+-        %p 
+-          This page lists some of the apps that are available as Flatpaks, along with instructions for how 
+-          to try them. Read more about Flatpak on the 
+-          =link_to "Flatpak website.", "http://flatpak.org"
++        %h1 Apps for every Linux distribution
++        %p
++          Follow the
++          =succeed " and try any of these apps today." do
++            =link_to "setup steps", "index.html#setup"
+ 
+         %ul#tabs.nav.nav-tabs{"role" => "tablist"}
+           %li.active{:role => "presentation"}
+@@ -36,9 +36,7 @@ description: Applications distributed as Flatpaks, ready to download.
+           %div#cli.tab-pane.fade{:role => "tabpanel"}
+ 
+             %p
+-              These command line instructions require Flatpak 0.6.13 or newer.
+-              Once installed, applications can be launched from the usual place in your desktop. For more
+-              information on how to update and manage your applications, see the 
++              For more information on how to update and manage your applications, see the
+               =link_to "command line tutorial.", "http://flatpak.org/command-line.html"
+ 
+             - data.appstream.apps.sort_by{ |i| i.name.downcase }.each do |i|
+diff --git a/source/index.html.haml b/source/index.html.haml
+index 65329f8..d276c04 100644
+--- a/source/index.html.haml
++++ b/source/index.html.haml
+@@ -11,50 +11,32 @@ description: Build and distribution service for Flatpak applications.
+       .row
+         .col-sm-8.col-sm-offset-2
+           %p
+-            Flathub is a build and distribution service for Flatpak applications. Its goal is to act as a central hub for making desktop applications available to users.
+-      .row
+-        .col-sm-8.col-sm-offset-2
+-          %p
+-            To download desktop applications on a modern Linux-based system,
+-            = link_to "download", "https://dl.flathub.org/repo/flathub.flatpakrepo"
+-            the repository file and add it to your system with GNOME Software
+-            or the Flatpak command line.
+-    
++            Flathub is a a growing collection of apps which can be easily installed on any Linux distribution. Once setup, you can browse and install from an app center, like GNOME Software or KDE Discover. Alternatively, you can browse and install apps from the website or using the command line.
++
+ %section
+   .container
+     .row
+       .col-sm-8.col-sm-offset-2
++        %h2#setup Setup instructions
+         %p
+-          To download and install applications from Flathub, you will need to install Flatpak (if you haven't already) and then add the repository in one of two ways:
+-
+-        %h2#using Using Flathub in GNOME Software
+-        %p
+-          If you are on Arch, Debian Stretch (or later), Endless OS, Fedora 25 (or later), Mageia 6 (or later), or OpenSUSE Tumbleweed, you can 
+-          = link_to "download", "https://dl.flathub.org/repo/flathub.flatpakrepo"
+-          the repository file and use GNOME Software to install it.
+-
+-        %h2#using Using Flathub on the Command Line
++          1. Follow the
++          = link_to "Flatpak installation instructions", "https://flatpak.org/getting.html"
++          for your distribution.
+         %p
+-          From the command line, run: 
++          2. Add the Flathub repository - with many distributions, you can download the
++          = link_to "the repository file", "https://dl.flathub.org/repo/flathub.flatpakrepo"
++          and install it with GNOME Software. Alternatively, from the command line, run:
+ 
+         %pre
+           :preserve
+             <span class="unselectable">$ </span>flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+-
+-        %p
+-          You can then browse and install applications in the normal manner. See the Flatpak 
+-          = link_to "command line tutorial", "http://flatpak.org/command-line.html"
+-          for more information on this.
+-
+-        %h2 Submitting apps
+         %p
+-          If you develop a Linux application and would like to make it available via Flathub, we would appreciate your contribution.
+-          Follow the instructions at
+-          = link_to "submission guidelines", "https://github.com/flathub/flathub/wiki/Submission-Guidelines"
+-          to submit your app.
++          3. That's it! You can now install apps from an app center, by
++          =succeed ", or through the flatpak command line." do
++            =link_to "browsing them online", "apps.html"
+ 
+-        %h2 Reporting issues
++        %h2 Issues
+         %p
+-          Security or legal issues can be reported to the 
++          Security or legal issues can be reported to the
+           = succeed "." do
+             = link_to "Flathub maintainers", "mailto:flathub@lists.freedesktop.org"
+-- 
+2.14.3
+
